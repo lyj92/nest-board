@@ -1,5 +1,5 @@
-import { BadRequestException, PipeTransform } from '@nestjs/common';
-import { BoardStatus } from '../board.model';
+import { BadRequestException, PipeTransform } from "@nestjs/common";
+import { BoardStatus } from "../board-status-enum";
 
 /**
  * 커스텀 파이프 (상태 유효성 검증)
