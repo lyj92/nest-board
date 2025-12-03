@@ -13,6 +13,7 @@ import { BoardsService } from "./boards.service";
 import type { BoardStatus } from "./board-status-enum";
 import { CreateBoardDto } from "./dto/create.board.dto";
 import { BoardStatusValidationPipe } from "./pipes/board-status-validation.pipe";
+import { Board } from "./board.entity";
 // export class BoardsController {
 //   boardsService: BoardsService;
 
@@ -36,6 +37,11 @@ export class BoardsController {
   // getAllBoard(): Board[] {
   //   return this.boardsService.getAllBoards();
   // }
+
+  @Get("/:id")
+  getBoardById(@Param("id") id: number): Promise<Board> {
+    return this.boardsService.getBoardById(Number(id));
+  }
 
   // /**
   //  * NestJS에서는 @Body body를 이용해서 가져옵니다.

@@ -21,6 +21,13 @@ let BoardsService = class BoardsService {
     constructor(boardRepository) {
         this.boardRepository = boardRepository;
     }
+    async getBoardById(id) {
+        const found = await this.boardRepository.findOne({ where: { id } });
+        if (!found) {
+            throw new common_1.NotFoundException(`Can't find Board with id ${id}`);
+        }
+        return found;
+    }
 };
 exports.BoardsService = BoardsService;
 exports.BoardsService = BoardsService = __decorate([
