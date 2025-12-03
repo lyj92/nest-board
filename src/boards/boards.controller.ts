@@ -43,6 +43,17 @@ export class BoardsController {
     return this.boardsService.getBoardById(Number(id));
   }
 
+  /**
+   * 게시판 생성
+   * @param createBoardDto
+   * @returns
+   */
+  @Post("")
+  @UsePipes(ValidationPipe)
+  createBoard(@Body() createBoardDto: CreateBoardDto): Promise<Board> {
+    return this.boardsService.createBoard(createBoardDto);
+  }
+
   // /**
   //  * NestJS에서는 @Body body를 이용해서 가져옵니다.
   //  * 이렇게 하면 모든 request에서 보내온 값을 가져올 수 있으며, 하나식 가져오려면

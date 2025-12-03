@@ -3,6 +3,8 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { BoardRepository } from "./board.repository";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Board } from "./board.entity";
+import { CreateBoardDto } from "./dto/create.board.dto";
+import { BoardStatus } from "./board-status-enum";
 
 /**
  *  injectable 데코레이터
@@ -50,6 +52,22 @@ export class BoardsService {
   //  * @param id 게시판 아이디
   //  * @returns
   //  */
+
+  /**
+   * 게시판 생성
+   * @param createBoardDto
+   */
+
+  async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
+    const { title, description } = createBoardDto;
+    const board = this.boardRepository.create({
+      title,
+      description,
+      status: BoardStatus.PUBLIC,
+    });
+    await this.boardRepository.save(board);
+    return board;
+  }
 
   async getBoardById(id: number): Promise<Board> {
     // constructor에서 주입받은 boardRepository를 사용해서 데이터베이스에서 데이터를 조회합니다.
