@@ -1,10 +1,9 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-// import { type BoardStatus } from "./board-status-enum";
 import { BoardRepository } from "./board.repository";
-import { InjectRepository } from "@nestjs/typeorm";
 import { Board } from "./board.entity";
 import { CreateBoardDto } from "./dto/create.board.dto";
 import { BoardStatus } from "./board-status-enum";
+import { InjectRepository } from "@nestjs/typeorm";
 
 /**
  *  injectable 데코레이터
@@ -16,6 +15,7 @@ export class BoardsService {
   constructor(
     @InjectRepository(BoardRepository) private boardRepository: BoardRepository,
   ) {}
+  // constructor(private boardRepository: BoardRepository) {}
 
   // private boards: Board[] = [];
   // /**
@@ -57,16 +57,8 @@ export class BoardsService {
    * 게시판 생성
    * @param createBoardDto
    */
-
-  async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
-    const { title, description } = createBoardDto;
-    const board = this.boardRepository.create({
-      title,
-      description,
-      status: BoardStatus.PUBLIC,
-    });
-    await this.boardRepository.save(board);
-    return board;
+  createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
+    return this.boardRepository.createBoard(createBoardDto);
   }
 
   async getBoardById(id: number): Promise<Board> {
