@@ -17,6 +17,14 @@ export class BoardsService {
   ) {}
   // constructor(private boardRepository: BoardRepository) {}
 
+  /**
+   * 사전 목록 전체 조회
+   * @returns
+   */
+  async getAllBoards(): Promise<Board[]> {
+    return this.boardRepository.find();
+  }
+
   // private boards: Board[] = [];
   // /**
   //  * 게시판 목록 조회

@@ -39,6 +39,15 @@ export class BoardsController {
   //   return this.boardsService.getAllBoards();
   // }
 
+  /**
+   * 사전 목록 전체 조회
+   * @returns
+   */
+  @Get()
+  GetAllTask(): Promise<Board[]> {
+    return this.boardsService.getAllBoards();
+  }
+
   @Get("/:id")
   getBoardById(@Param("id") id: number): Promise<Board> {
     return this.boardsService.getBoardById(Number(id));
