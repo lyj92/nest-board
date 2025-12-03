@@ -90,7 +90,19 @@ export class BoardsService {
     if (result?.affected == 0) {
       throw new NotFoundException(`Can't find Board with id ${id}`);
     }
-    console.log(result, "result");
+  }
+
+  /**
+   * 게시판 상태 업데이트
+   * @param id 게시판 아이디
+   * @param status 게시판 상태
+   * @returns
+   */
+  async updateBoardStatus(id: number, status: BoardStatus): Promise<Board> {
+    const board = await this.getBoardById(id);
+    board.status = status;
+    await this.boardRepository.save(board);
+    return board;
   }
 
   // /**

@@ -89,6 +89,21 @@ export class BoardsController {
     return this.boardsService.deleteBoard(id);
   }
 
+  /**
+   * 게시판 상태 업데이트
+   * @param id 게시판 아이디
+   * @param status 게시판 상태
+   * @returns
+   */
+
+  @Patch("/:id/status")
+  updateBoardStatus(
+    @Param("id", ParseIntPipe) id: number,
+    @Body("status", BoardStatusValidationPipe) status: BoardStatus,
+  ): Promise<Board> {
+    return this.boardsService.updateBoardStatus(id, status);
+  }
+
   // /**
   //  * 게시판 삭제
   //  * @param id 게시판 아이디
