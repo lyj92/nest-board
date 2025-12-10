@@ -21,12 +21,30 @@ let BoardsService = class BoardsService {
     constructor(boardRepository) {
         this.boardRepository = boardRepository;
     }
+    async getAllBoards() {
+        return this.boardRepository.find();
+    }
+    createBoard(createBoardDto) {
+        return this.boardRepository.createBoard(createBoardDto);
+    }
     async getBoardById(id) {
         const found = await this.boardRepository.findOne({ where: { id } });
         if (!found) {
             throw new common_1.NotFoundException(`Can't find Board with id ${id}`);
         }
         return found;
+    }
+    async deleteBoard(id) {
+        const result = await this.boardRepository.delete(id);
+        if (result?.affected == 0) {
+            throw new common_1.NotFoundException(`Can't find Board with id ${id}`);
+        }
+    }
+    async updateBoardStatus(id, status) {
+        const board = await this.getBoardById(id);
+        board.status = status;
+        await this.boardRepository.save(board);
+        return board;
     }
 };
 exports.BoardsService = BoardsService;
