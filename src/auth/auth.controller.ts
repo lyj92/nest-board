@@ -18,4 +18,14 @@ export class AuthController {
   ): Promise<void> {
     return this.authService.signUp(authCredentialDto);
   }
+
+  /**
+   * 회원 로그인
+   * @param authCredentialDto
+   * @returns
+   */
+  @Post("/signin")
+  signIn(@Body(ValidationPipe) authCredentialDto: AuthCredentialDto) {
+    return this.authService.signIn(authCredentialDto);
+  }
 }
