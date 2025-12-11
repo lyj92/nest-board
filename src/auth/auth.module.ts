@@ -5,8 +5,8 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { UserRepository } from "./user.repository";
 import { User } from "./user.entity";
 import { JwtModule } from "@nestjs/jwt";
-import { PassportModule } from "@nestjs/passport";
-
+import { PassportModule, PassportStrategy } from "@nestjs/passport";
+import { JwtStrategy } from "./jwt.strategy";
 /**
  * TypeORM 0.3.x 버전부터 @EntityRepository() 데코레이터가 deprecated 되면서:
  * 구 방식: Repository에 @EntityRepository() 데코레이터를 붙이고 forFeature에 바로 넣음
@@ -29,6 +29,7 @@ import { PassportModule } from "@nestjs/passport";
     TypeOrmModule.forFeature([User]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, UserRepository],
+  providers: [AuthService, UserRepository, JwtStrategy],
+  exports: [JwtStrategy, PassportModule],
 })
 export class AuthModule {}
