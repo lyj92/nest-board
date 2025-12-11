@@ -4,9 +4,10 @@ import { BoardsController } from "./boards.controller";
 import { BoardsService } from "./boards.service";
 import { BoardRepository } from "./board.repository";
 import { Board } from "./board.entity";
+import { AuthModule } from "src/auth/auth.module";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Board])],
+  imports: [TypeOrmModule.forFeature([Board]), AuthModule],
   controllers: [BoardsController],
   providers: [BoardsService, BoardRepository],
 })

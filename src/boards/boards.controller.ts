@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from "@nestjs/common";
@@ -15,6 +16,7 @@ import type { BoardStatus } from "./board-status-enum";
 import { CreateBoardDto } from "./dto/create.board.dto";
 import { BoardStatusValidationPipe } from "./pipes/board-status-validation.pipe";
 import { Board } from "./board.entity";
+import { AuthGuard } from "@nestjs/passport";
 // export class BoardsController {
 //   boardsService: BoardsService;
 
@@ -25,9 +27,11 @@ import { Board } from "./board.entity";
 
 /**
  * private 같은 접근 제한자를 파라미터에 선언하면 접근 제한자가 사용된 생성자 파라미터는 암묵적으로 프로퍼티로 선언됩니다.
+ * @UseGuards(AuthGuard()) 토큰 유효 검증으로 접근 권한 체크
  */
 
 @Controller("boards")
+@UseGuards(AuthGuard())
 export class BoardsController {
   constructor(private boardsService: BoardsService) {}
   // /**
