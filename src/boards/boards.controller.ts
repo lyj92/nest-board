@@ -17,13 +17,8 @@ import { CreateBoardDto } from "./dto/create.board.dto";
 import { BoardStatusValidationPipe } from "./pipes/board-status-validation.pipe";
 import { Board } from "./board.entity";
 import { AuthGuard } from "@nestjs/passport";
-// export class BoardsController {
-//   boardsService: BoardsService;
-
-//   constructor(private boardService: BoardsService) {
-//     this.boardsService = boardService;
-//   }
-// }
+import { GetUser } from "src/auth/get-user.decorator";
+import { User } from "src/auth/user.entity";
 
 /**
  * private 같은 접근 제한자를 파라미터에 선언하면 접근 제한자가 사용된 생성자 파라미터는 암묵적으로 프로퍼티로 선언됩니다.
@@ -64,8 +59,11 @@ export class BoardsController {
    */
   @Post("")
   @UsePipes(ValidationPipe)
-  createBoard(@Body() createBoardDto: CreateBoardDto): Promise<Board> {
-    return this.boardsService.createBoard(createBoardDto);
+  createBoard(
+    @Body() createBoardDto: CreateBoardDto,
+    @GetUser() user: User,
+  ): Promise<Board> {
+    return this.boardsService.createBoard(createBoardDto, user);
   }
 
   // /**
