@@ -19,7 +19,7 @@ export class BoardsService {
   // constructor(private boardRepository: BoardRepository) {}
 
   /**
-   * 사전 목록 전체 조회
+   * 게시글 목록 userId에 맞춰서 조회
    * @returns
    */
   async getAllBoards(user: User): Promise<Board[]> {
@@ -27,6 +27,9 @@ export class BoardsService {
 
     query.where("board.userId = :userId", { userId: user.id });
 
+    /**
+     * getMany 쿼리에 해당하는 데이터 전부 다 가져옴
+     */
     const boards = await query.getMany();
 
     return boards;
@@ -100,8 +103,11 @@ export class BoardsService {
    * @param id 게시판 아이디
    */
 
-  async deleteBoard(id: number): Promise<void> {
-    const result = await this.boardRepository.delete(id);
+  async deleteBoard(id: number, user: User): Promise<void> {
+    /**
+     * delete({ id, user }) user 정보를 객체안에 포함하여 게시글의 userId가 일치하는 경우에만 삭제가 가능
+     */
+    const result = await this.boardRepository.delete({ id, user });
     if (result?.affected == 0) {
       throw new NotFoundException(`Can't find Board with id ${id}`);
     }

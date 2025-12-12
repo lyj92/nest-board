@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   ParseIntPipe,
   Patch,
@@ -28,6 +29,7 @@ import { User } from "src/auth/user.entity";
 @Controller("boards")
 @UseGuards(AuthGuard())
 export class BoardsController {
+  private logger = new Logger("BoardController");
   constructor(private boardsService: BoardsService) {}
   // /**
   //  * 게시판 전체조회
@@ -44,6 +46,7 @@ export class BoardsController {
    */
   @Get()
   getAllBoards(@GetUser() user: User): Promise<Board[]> {
+    this.logger.verbose(`User "${user.username} trying to get all boards"`);
     return this.boardsService.getAllBoards(user);
   }
 
@@ -63,6 +66,8 @@ export class BoardsController {
     @Body() createBoardDto: CreateBoardDto,
     @GetUser() user: User,
   ): Promise<Board> {
+    this.logger.verbose(`User "${user.username}" creating a new board. 
+      Payload : ${JSON.stringify(createBoardDto)}`);
     return this.boardsService.createBoard(createBoardDto, user);
   }
 
@@ -96,8 +101,11 @@ export class BoardsController {
    * @param ParseIntPipe 숫자형인지 유효성검증
    */
   @Delete("/:id")
-  deleteBoard(@Param("id", ParseIntPipe) id: number): Promise<void> {
-    return this.boardsService.deleteBoard(id);
+  deleteBoard(
+    @Param("id", ParseIntPipe) id: number,
+    @GetUser() user: User,
+  ): Promise<void> {
+    return this.boardsService.deleteBoard(id, user);
   }
 
   /**
