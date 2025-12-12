@@ -5,4 +5,4 @@ db:
   synchronize: true
 
 jwt:
-  expiresIn: "Secret1234"
+  secret: "Secret1234"
