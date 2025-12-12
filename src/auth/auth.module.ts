@@ -7,6 +7,7 @@ import { User } from "./user.entity";
 import { JwtModule } from "@nestjs/jwt";
 import { PassportModule, PassportStrategy } from "@nestjs/passport";
 import { JwtStrategy } from "./jwt.strategy";
+import config from "config";
 /**
  * TypeORM 0.3.x 버전부터 @EntityRepository() 데코레이터가 deprecated 되면서:
  * 구 방식: Repository에 @EntityRepository() 데코레이터를 붙이고 forFeature에 바로 넣음
@@ -17,13 +18,14 @@ import { JwtStrategy } from "./jwt.strategy";
  *  expiresIn 토큰 만료시간
  */
 
+const jwtConfig = config.get("jwt");
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: "jwt" }),
     JwtModule.register({
-      secret: "Secret1234",
+      secret: process.env.JWT_SECRET || jwtConfig.secret,
       signOptions: {
-        expiresIn: 60 * 60,
+        expiresIn: jwtConfig.expiresIn,
       },
     }),
     TypeOrmModule.forFeature([User]),
